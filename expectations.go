@@ -28,13 +28,13 @@ func (e *commonExpectation) fulfilled() bool {
 	return e.triggered
 }
 
-// ExpectedClose is used to manage *sql.DB.Close expectation
+// ExpectedClose is used to manage *sqlx.DB.Close expectation
 // returned by *Sqlmock.ExpectClose.
 type ExpectedClose struct {
 	commonExpectation
 }
 
-// WillReturnError allows to set an error for *sql.DB.Close action
+// WillReturnError allows to set an error for *sqlx.DB.Close action
 func (e *ExpectedClose) WillReturnError(err error) *ExpectedClose {
 	e.err = err
 	return e
@@ -49,14 +49,14 @@ func (e *ExpectedClose) String() string {
 	return msg
 }
 
-// ExpectedBegin is used to manage *sql.DB.Begin expectation
+// ExpectedBegin is used to manage *sqlx.DB.Begin expectation
 // returned by *Sqlmock.ExpectBegin.
 type ExpectedBegin struct {
 	commonExpectation
 	delay time.Duration
 }
 
-// WillReturnError allows to set an error for *sql.DB.Begin action
+// WillReturnError allows to set an error for *sqlx.DB.Begin action
 func (e *ExpectedBegin) WillReturnError(err error) *ExpectedBegin {
 	e.err = err
 	return e
@@ -120,7 +120,7 @@ func (e *ExpectedRollback) String() string {
 	return msg
 }
 
-// ExpectedQuery is used to manage *sql.DB.Query, *dql.DB.QueryRow, *sql.Tx.Query,
+// ExpectedQuery is used to manage *sqlx.DB.Query, *dql.DB.QueryRow, *sql.Tx.Query,
 // *sql.Tx.QueryRow, *sql.Stmt.Query or *sql.Stmt.QueryRow expectations.
 // Returned by *Sqlmock.ExpectQuery.
 type ExpectedQuery struct {
@@ -184,7 +184,7 @@ func (e *ExpectedQuery) String() string {
 	return msg
 }
 
-// ExpectedExec is used to manage *sql.DB.Exec, *sql.Tx.Exec or *sql.Stmt.Exec expectations.
+// ExpectedExec is used to manage *sqlx.DB.Exec, *sql.Tx.Exec or *sql.Stmt.Exec expectations.
 // Returned by *Sqlmock.ExpectExec.
 type ExpectedExec struct {
 	queryBasedExpectation
@@ -255,7 +255,7 @@ func (e *ExpectedExec) WillReturnResult(result driver.Result) *ExpectedExec {
 	return e
 }
 
-// ExpectedPrepare is used to manage *sql.DB.Prepare or *sql.Tx.Prepare expectations.
+// ExpectedPrepare is used to manage *sqlx.DB.Prepare or *sql.Tx.Prepare expectations.
 // Returned by *Sqlmock.ExpectPrepare.
 type ExpectedPrepare struct {
 	commonExpectation
@@ -268,7 +268,7 @@ type ExpectedPrepare struct {
 	delay        time.Duration
 }
 
-// WillReturnError allows to set an error for the expected *sql.DB.Prepare or *sql.Tx.Prepare action.
+// WillReturnError allows to set an error for the expected *sqlx.DB.Prepare or *sql.Tx.Prepare action.
 func (e *ExpectedPrepare) WillReturnError(err error) *ExpectedPrepare {
 	e.err = err
 	return e

@@ -8,9 +8,11 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/jmoiron/sqlx"
 )
 
-func cancelOrder(db *sql.DB, orderID int) error {
+func cancelOrder(db *sqlx.DB, orderID int) error {
 	tx, _ := db.Begin()
 	_, _ = tx.Query("SELECT * FROM orders {0} FOR UPDATE", orderID)
 	err := tx.Rollback()
@@ -1195,7 +1197,7 @@ func TestQueryWithTimeout(t *testing.T) {
 	}
 }
 
-func queryWithTimeout(t time.Duration, db *sql.DB, query string, args ...interface{}) (*sql.Rows, error) {
+func queryWithTimeout(t time.Duration, db *sqlx.DB, query string, args ...interface{}) (*sql.Rows, error) {
 	rowsChan := make(chan *sql.Rows, 1)
 	errChan := make(chan error, 1)
 

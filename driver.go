@@ -5,6 +5,8 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"sync"
+
+	"github.com/jmoiron/sqlx"
 )
 
 var pool *mockDriver
@@ -40,7 +42,7 @@ func (d *mockDriver) Open(dsn string) (driver.Conn, error) {
 // a specific driver.
 // Pings db so that all expectations could be
 // asserted.
-func New(options ...func(*sqlmock) error) (*sql.DB, Sqlmock, error) {
+func New(options ...func(*sqlmock) error) (*sqlx.DB, Sqlmock, error) {
 	pool.Lock()
 	dsn := fmt.Sprintf("sqlmock_db_%d", pool.counter)
 	pool.counter++
@@ -60,14 +62,14 @@ func New(options ...func(*sqlmock) error) (*sql.DB, Sqlmock, error) {
 //
 // This method is introduced because of sql abstraction
 // libraries, which do not provide a way to initialize
-// with sql.DB instance. For example GORM library.
+// with sqlx.DB instance. For example GORM library.
 //
 // Note, it will error if attempted to create with an
 // already used dsn
 //
 // It is not recommended to use this method, unless you
 // really need it and there is no other way around.
-func NewWithDSN(dsn string, options ...func(*sqlmock) error) (*sql.DB, Sqlmock, error) {
+func NewWithDSN(dsn string, options ...func(*sqlmock) error) (*sqlx.DB, Sqlmock, error) {
 	pool.Lock()
 	if _, ok := pool.conns[dsn]; ok {
 		pool.Unlock()

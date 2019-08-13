@@ -11,10 +11,11 @@ The driver allows to mock any sql driver method behavior.
 package sqlmock
 
 import (
-	"database/sql"
 	"database/sql/driver"
 	"fmt"
 	"time"
+
+	"github.com/jmoiron/sqlx"
 )
 
 // Sqlmock interface serves to create expectations
@@ -45,7 +46,7 @@ type Sqlmock interface {
 	// the *ExpectedExec allows to mock database response
 	ExpectExec(expectedSQL string) *ExpectedExec
 
-	// ExpectBegin expects *sql.DB.Begin to be called.
+	// ExpectBegin expects *sqlx.DB.Begin to be called.
 	// the *ExpectedBegin allows to mock database response
 	ExpectBegin() *ExpectedBegin
 
@@ -87,8 +88,8 @@ type sqlmock struct {
 	expected []expectation
 }
 
-func (c *sqlmock) open(options []func(*sqlmock) error) (*sql.DB, Sqlmock, error) {
-	db, err := sql.Open("sqlmock", c.dsn)
+func (c *sqlmock) open(options []func(*sqlmock) error) (*sqlx.DB, Sqlmock, error) {
+	db, err := sqlx.Open("sqlmock", c.dsn)
 	if err != nil {
 		return db, c, err
 	}

@@ -1,13 +1,14 @@
 package main
 
 import (
-	"database/sql"
 	"encoding/json"
 	"net/http"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type api struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
 type post struct {
@@ -47,7 +48,7 @@ func (a *api) posts(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// @NOTE: the real connection is not required for tests
-	db, err := sql.Open("mysql", "root@/blog")
+	db, err := sqlx.Open("mysql", "root@/blog")
 	if err != nil {
 		panic(err)
 	}

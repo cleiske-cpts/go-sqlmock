@@ -1,8 +1,10 @@
 package main
 
-import "database/sql"
+import (
+	"github.com/jmoiron/sqlx"
+)
 
-func recordStats(db *sql.DB, userID, productID int64) (err error) {
+func recordStats(db *sqlx.DB, userID, productID int64) (err error) {
 	tx, err := db.Begin()
 	if err != nil {
 		return
@@ -28,7 +30,7 @@ func recordStats(db *sql.DB, userID, productID int64) (err error) {
 
 func main() {
 	// @NOTE: the real connection is not required for tests
-	db, err := sql.Open("mysql", "root@/blog")
+	db, err := sqlx.Open("mysql", "root@/blog")
 	if err != nil {
 		panic(err)
 	}

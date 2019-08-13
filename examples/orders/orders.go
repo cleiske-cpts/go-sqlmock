@@ -1,10 +1,10 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/kisielk/sqlstruct"
 )
 
@@ -24,7 +24,7 @@ type Order struct {
 	Status      int     `sql:"status"`
 }
 
-func cancelOrder(id int, db *sql.DB) (err error) {
+func cancelOrder(id int, db *sqlx.DB) (err error) {
 	tx, err := db.Begin()
 	if err != nil {
 		return
@@ -109,7 +109,7 @@ FOR UPDATE`,
 
 func main() {
 	// @NOTE: the real connection is not required for tests
-	db, err := sql.Open("mysql", "root:@/orders")
+	db, err := sqlx.Open("mysql", "root:@/orders")
 	if err != nil {
 		log.Fatal(err)
 	}

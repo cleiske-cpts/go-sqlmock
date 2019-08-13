@@ -48,7 +48,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func recordStats(db *sql.DB, userID, productID int64) (err error) {
+func recordStats(db *sqlx.DB, userID, productID int64) (err error) {
 	tx, err := db.Begin()
 	if err != nil {
 		return
@@ -74,7 +74,7 @@ func recordStats(db *sql.DB, userID, productID int64) (err error) {
 
 func main() {
 	// @NOTE: the real connection is not required for tests
-	db, err := sql.Open("mysql", "root@/blog")
+	db, err := sqlx.Open("mysql", "root@/blog")
 	if err != nil {
 		panic(err)
 	}
@@ -239,7 +239,7 @@ It only asserts that argument is of `time.Time` type.
 interface methods, see [issue](https://github.com/DATA-DOG/go-sqlmock/issues/5)
 - **2014-05-29** allow to match arguments in more sophisticated ways, by providing an **sqlmock.Argument** interface
 - **2014-04-21** introduce **sqlmock.New()** to open a mock database connection for tests. This method
-calls sql.DB.Ping to ensure that connection is open, see [issue](https://github.com/DATA-DOG/go-sqlmock/issues/4).
+calls sqxl.DB.Ping to ensure that connection is open, see [issue](https://github.com/DATA-DOG/go-sqlmock/issues/4).
 This way on Close it will surely assert if all expectations are met, even if database was not triggered at all.
 The old way is still available, but it is advisable to call db.Ping manually before asserting with db.Close.
 - **2014-02-14** RowsFromCSVString is now a part of Rows interface named as FromCSVString.
